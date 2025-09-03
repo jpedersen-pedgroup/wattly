@@ -1,9 +1,7 @@
-const { app } = require('@azure/functions');
-
-app.http('hello', {
-  methods: ['GET'],
-  authLevel: 'anonymous',
-  handler: async (request, context) => {
-    return { status: 200, body: { text: "Hello from Azure Functions!" } };
-  }
-});
+module.exports = async function (context, req) {
+  context.res = {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+    body: { text: "Hello from Azure Functions!" }
+  };
+};
