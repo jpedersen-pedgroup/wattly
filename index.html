@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Wattly — Smarter energy, together</title>
-  <meta name="description" content="Wattly is a community-powered virtual energy network. Register your interest to join the pilot and help lower energy costs with rooftop solar." />
+  <meta name="description" content="Wattly is a community-powered virtual energy network. Register your interest to join the pilot and help lower energy costs with local renewable power." />
   <meta property="og:title" content="Wattly — Smarter energy, together" />
-  <meta property="og:description" content="A sleek, mobile‑friendly landing page for Wattly. Register interest to join our virtual energy network pilot." />
+  <meta property="og:description" content="A sleek, mobile-friendly landing page for Wattly. Register interest to join our virtual energy network pilot." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://placehold.co/1200x630/png?text=Wattly" />
   <meta name="theme-color" content="#0ea5e9" />
@@ -19,7 +19,8 @@
         extend: {
           colors: {
             wattly: {
-              50: '#effafe', 100: '#d9f0fb', 200: '#b8e2f7', 300: '#86cdf2', 400: '#4db3ea', 500: '#1996db', 600: '#0e7dbf', 700: '#0d66a0', 800: '#0f5684', 900: '#11486d'
+              50: '#effafe', 100: '#d9f0fb', 200: '#b8e2f7', 300: '#86cdf2', 400: '#4db3ea', 500: '#1996db',
+              600: '#0e7dbf', 700: '#0d66a0', 800: '#0f5684', 900: '#11486d'
             }
           }
         }
@@ -29,14 +30,15 @@
   <style>
     /* Subtle animated gradient background */
     .bg-aurora {
-      background: radial-gradient(1200px 600px at 10% -10%, rgba(25,150,219,.25), transparent 50%),
-                  radial-gradient(900px 500px at 90% 10%, rgba(99,102,241,.20), transparent 50%),
-                  radial-gradient(800px 400px at 50% 110%, rgba(16,185,129,.15), transparent 50%);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(25,150,219,.25), transparent 50%),
+        radial-gradient(900px 500px at 90% 10%, rgba(99,102,241,.20), transparent 50%),
+        radial-gradient(800px 400px at 50% 110%, rgba(16,185,129,.15), transparent 50%);
     }
     .glass { background: rgba(255,255,255,.08); backdrop-filter: blur(10px); }
     html { scroll-behavior: smooth; }
     .shadow-soft { box-shadow: 0 10px 30px rgba(2, 6, 23, .15); }
-    .logo {max-width: 2rem; max-height: 2rem;}
+    .logo { max-width: 6rem; max-height: 6rem; }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 bg-aurora">
@@ -45,8 +47,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
         <a href="#top" class="flex items-center gap-2">
-          <!-- Simple spark logo -->
-          <img src="../assets/wattly logo2.png" alt="Wattly" class="h-10 w-auto logo">
+          <img src="wattly logo2.png" alt="Wattly logo" class="logo">
           <span class="font-semibold tracking-tight">Wattly</span>
         </a>
         <nav class="hidden md:flex items-center gap-6 text-sm">
@@ -81,7 +82,9 @@
           <h1 class="text-4xl sm:text-5xl font-semibold leading-tight tracking-tight">
             Smarter energy, <span class="text-sky-400">together</span>.
           </h1>
-          <p class="mt-5 text-slate-300 text-lg leading-relaxed max-w-prose">Wattly connects rooftop solar across communities to create a Virtual Energy Network. Buy and sell cleaner power locally, reduce bills, and help stabilise the grid.</p>
+          <p class="mt-5 text-slate-300 text-lg leading-relaxed max-w-prose">
+            Wattly brings communities together to support local renewable power. By linking homes, businesses, and building owners into a Virtual Energy Network, everyone can buy and sell cleaner energy locally, cut costs, and strengthen the grid.
+          </p>
           <div class="mt-8 flex flex-col sm:flex-row gap-3">
             <a href="#signup" class="inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 font-medium text-slate-950 hover:bg-sky-400 shadow-soft">Join the pilot</a>
             <a href="#how" class="inline-flex items-center justify-center rounded-full ring-1 ring-white/20 px-6 py-3 font-medium hover:bg-white/5">How it works</a>
@@ -97,7 +100,6 @@
               <p class="text-sm uppercase tracking-widest text-slate-300">Virtual Energy Network</p>
               <h3 class="mt-2 text-2xl font-semibold">Producers ↔ Consumers</h3>
               <p class="mt-2 text-slate-300 max-w-md">Excess solar exported to local neighbours and businesses at fair, transparent rates.</p>
-              <!-- Decorative flow arrows -->
               <div class="mt-6 flex items-center justify-center gap-4 text-slate-300">
                 <span class="px-3 py-1 rounded-full bg-white/10">Rooftop Solar</span>
                 <svg class="h-6 w-6 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
@@ -113,7 +115,7 @@
   </section>
 
   <!-- Logos / social proof (optional placeholders) -->
-  <section aria-label="as‑seen‑with" class="border-t border-white/10">
+  <section aria-label="as-seen-with" class="border-t border-white/10">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       <p class="text-center text-sm text-slate-400">Pilot partners & supporters (TBA)</p>
       <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-6 opacity-60">
@@ -130,29 +132,50 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
       <div class="max-w-2xl">
         <h2 class="text-3xl font-semibold tracking-tight">How Wattly works</h2>
-        <p class="mt-3 text-slate-300">We link mid‑sized rooftop solar across a neighbourhood into a single virtual network that shares power and value.</p>
+        <p class="mt-3 text-slate-300">We link buyers and sellers into a virtual energy network that shares power and value.</p>
       </div>
       <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <!-- Card 1 -->
         <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-medium">Generate</h3>
+            <div class="flex items-center gap-3">
+              <!-- Solar panel icon -->
+              <svg class="h-6 w-6 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                      d="M3 7h18M3 7l2 10h14l2-10M7 7l1 10M12 7v10M16 7l-1 10" />
+              </svg>
+              <h3 class="text-lg font-medium">Generate</h3>
+            </div>
             <span class="text-xs text-slate-400">Step 1</span>
           </div>
-          <p class="mt-2 text-slate-300">Commercial roofs host 200–400 kW solar arrays. Owners use what they need and export the rest.</p>
+          <p class="mt-2 text-slate-300">Residential and commercial solar use what they need and export the rest.</p>
         </article>
         <!-- Card 2 -->
         <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-medium">Pool</h3>
+            <div class="flex items-center gap-3">
+              <!-- Pool icon -->
+              <svg class="h-6 w-6 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                      d="M4 12c4 2 12 2 16 0M4 16c4 2 12 2 16 0M4 8c4 2 12 2 16 0" />
+              </svg>
+              <h3 class="text-lg font-medium">Pool</h3>
+            </div>
             <span class="text-xs text-slate-400">Step 2</span>
           </div>
-          <p class="mt-2 text-slate-300">Exports are pooled virtually and made available to nearby homes and businesses.</p>
+          <p class="mt-2 text-slate-300">Exports are pooled virtually and made available to nearby users.</p>
         </article>
         <!-- Card 3 -->
         <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-medium">Match</h3>
+            <div class="flex items-center gap-3">
+              <!-- Match icon -->
+              <svg class="h-6 w-6 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                      d="M7 8l5 5 5-5M7 16h10" />
+              </svg>
+              <h3 class="text-lg font-medium">Match</h3>
+            </div>
             <span class="text-xs text-slate-400">Step 3</span>
           </div>
           <p class="mt-2 text-slate-300">Smart matching ensures fair pricing and prioritises local consumption.</p>
@@ -160,26 +183,93 @@
         <!-- Card 4 -->
         <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-medium">Save</h3>
+            <div class="flex items-center gap-3">
+              <!-- Savings icon -->
+              <svg class="h-6 w-6 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 3v18M6 7h8a4 4 0 010 8H6" />
+              </svg>
+              <h3 class="text-lg font-medium">Save</h3>
+            </div>
             <span class="text-xs text-slate-400">Step 4</span>
           </div>
-          <p class="mt-2 text-slate-300">Participants see lower bills and producers earn more than wholesale export rates.</p>
+          <p class="mt-2 text-slate-300">Participants see lower bills; producers earn more than wholesale export rates.</p>
         </article>
         <!-- Card 5 -->
         <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-medium">Engage</h3>
+            <div class="flex items-center gap-3">
+              <!-- Dashboard icon -->
+              <svg class="h-6 w-6 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                      d="M3 12h18M3 6h18M3 18h10" />
+              </svg>
+              <h3 class="text-lg font-medium">Engage</h3>
+            </div>
             <span class="text-xs text-slate-400">Step 5</span>
           </div>
-          <p class="mt-2 text-slate-300">Dashboards track usage, savings, and carbon impact for homes and businesses.</p>
+          <p class="mt-2 text-slate-300">Dashboards track usage, savings, and carbon impact for all participants.</p>
         </article>
         <!-- Card 6 -->
         <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-medium">Scale</h3>
+            <div class="flex items-center gap-3">
+              <!-- Growth icon -->
+              <svg class="h-6 w-6 text-pink-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                      d="M4 12l4-4 4 4 6-6M4 20h16" />
+              </svg>
+              <h3 class="text-lg font-medium">Scale</h3>
+            </div>
             <span class="text-xs text-slate-400">Step 6</span>
           </div>
-          <p class="mt-2 text-slate-300">New roofs join over time, growing local supply and resilience.</p>
+          <p class="mt-2 text-slate-300">As more roofs and organisations join, local supply, resilience, and community benefit grow.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Communities -->
+  <section class="border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-3xl font-bold mb-12">Support Local Schools & Community Groups</h2>
+
+      <div class="grid gap-8 md:grid-cols-3 text-left">
+        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
+          <div class="flex items-center gap-3 mb-2">
+            <svg class="h-6 w-6 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16v12H4zM8 10h8"/>
+            </svg>
+            <h3 class="text-xl font-semibold">Community Access</h3>
+          </div>
+          <p class="text-slate-300">
+            Schools, clubs, and community centres can join as energy consumers in the Virtual Energy Network.
+          </p>
+        </article>
+
+        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
+          <div class="flex items-center gap-3 mb-2">
+            <svg class="h-6 w-6 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 3l3 5 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1 3-5"/>
+            </svg>
+            <h3 class="text-xl font-semibold">Local Power</h3>
+          </div>
+          <p class="text-slate-300">
+            Their power comes from local rooftops, helping them save money and reduce reliance on traditional wholesale markets.
+          </p>
+        </article>
+
+        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
+          <div class="flex items-center gap-3 mb-2">
+            <svg class="h-6 w-6 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M7 12l3 3 7-7"/>
+            </svg>
+            <h3 class="text-xl font-semibold">Community Impact</h3>
+          </div>
+          <p class="text-slate-300">
+            Every time you participate, you’re not just cutting costs or going greener — you’re directly supporting local organisations that make your community stronger.
+          </p>
         </article>
       </div>
     </div>
@@ -194,7 +284,7 @@
           <ul class="mt-6 space-y-4 text-slate-300">
             <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400"></span> Lower and more predictable power costs</li>
             <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky-400"></span> Support local generation and keep value in your community</li>
-            <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-indigo-400"></span> Real‑time insights and transparent pricing</li>
+            <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-indigo-400"></span> Real-time insights and transparent pricing</li>
             <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-yellow-400"></span> Reduced carbon footprint</li>
             <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-pink-400"></span> Positive PR for participating businesses</li>
           </ul>
@@ -294,23 +384,31 @@
       <h2 class="text-3xl font-semibold tracking-tight">Frequently asked</h2>
       <div class="mt-8 grid gap-4 sm:grid-cols-2">
         <details class="group glass rounded-2xl border border-white/10 p-6">
-          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">Is this available in my area?
-            <span class="transition-transform group-open:rotate-180">▾</span></summary>
+          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">
+            Is this available in my area?
+            <span class="transition-transform group-open:rotate-180">▾</span>
+          </summary>
           <p class="mt-3 text-slate-300">We’re rolling out pilots region by region. Register and we’ll keep you posted.</p>
         </details>
         <details class="group glass rounded-2xl border border-white/10 p-6">
-          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">Do I need my own solar?
-            <span class="transition-transform group-open:rotate-180">▾</span></summary>
+          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">
+            Do I need my own solar?
+            <span class="transition-transform group-open:rotate-180">▾</span>
+          </summary>
           <p class="mt-3 text-slate-300">No. Consumers can benefit from nearby producers’ excess generation.</p>
         </details>
         <details class="group glass rounded-2xl border border-white/10 p-6">
-          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">What does it cost?
-            <span class="transition-transform group-open:rotate-180">▾</span></summary>
+          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">
+            What does it cost?
+            <span class="transition-transform group-open:rotate-180">▾</span>
+          </summary>
           <p class="mt-3 text-slate-300">Pricing is transparent. Expect a discounted rate vs standard tariffs for pilot participants.</p>
         </details>
         <details class="group glass rounded-2xl border border-white/10 p-6">
-          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">Is this compliant with NZ rules?
-            <span class="transition-transform group-open:rotate-180">▾</span></summary>
+          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">
+            Is this compliant with NZ rules?
+            <span class="transition-transform group-open:rotate-180">▾</span>
+          </summary>
           <p class="mt-3 text-slate-300">We’re working within existing market and distributed generation frameworks, partnering with retailers and network operators.</p>
         </details>
       </div>
@@ -392,7 +490,6 @@
       };
 
       const ENDPOINT = '/api/submit-interest';
-      //const ENDPOINT = '/api/hello';
 
       try {
         // Optimistic UI + local backup
@@ -409,7 +506,7 @@
         if (!res.ok) throw new Error('Network response was not ok');
 
         form.reset();
-        status.textContent = 'Thanks! You\'re on the list. We\'ll be in touch soon.';
+        status.textContent = "Thanks! You're on the list. We'll be in touch soon.";
       } catch (err) {
         console.warn('Submission failed, saved locally', err);
         status.innerHTML = 'Saved locally. Please email <a class="underline" href="mailto:hello@wattly.energy">hello@wattly.energy</a> or try again shortly.';
