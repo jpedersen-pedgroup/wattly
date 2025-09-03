@@ -45,3 +45,20 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PURPLE_MOSS_030C06C10 }}
           action: "close"
+
+
+# Add this host.json file under /api
+# api/host.json
+{
+  "version": "2.0"
+}
+
+# Add this .gitignore file under /api to keep the repo clean
+# api/.gitignore
+/bin
+/obj
+local.settings.json
+*.user
+*.suo
+.vscode/
+.DS_Store
