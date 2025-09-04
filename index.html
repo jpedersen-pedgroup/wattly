@@ -1,522 +1,1249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wattly — Smarter energy, together</title>
-  <meta name="description" content="Wattly is a community-powered virtual energy network. Register your interest to join the pilot and help lower energy costs with local renewable power." />
-  <meta property="og:title" content="Wattly — Smarter energy, together" />
-  <meta property="og:description" content="A sleek, mobile-friendly landing page for Wattly. Register interest to join our virtual energy network pilot." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://placehold.co/1200x630/png?text=Wattly" />
-  <meta name="theme-color" content="#0ea5e9" />
-  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <meta name="description" content="Join the community-powered virtual energy network. Save up to 47% on energy costs with local renewable power."/>
 
-  <!-- Tailwind via CDN for quick iteration -->
+  <!-- Favicon (replace with your file if you have one) -->
+  <link rel="icon" href="/favicon.png" type="image/png"/>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind (utility only; most styling is in the CSS below referencing your IDs) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            wattly: {
-              50: '#effafe', 100: '#d9f0fb', 200: '#b8e2f7', 300: '#86cdf2', 400: '#4db3ea', 500: '#1996db',
-              600: '#0e7dbf', 700: '#0d66a0', 800: '#0f5684', 900: '#11486d'
-            }
-          }
-        }
-      }
-    }
-  </script>
+
   <style>
-    /* Subtle animated gradient background */
-    .bg-aurora {
-      background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(25,150,219,.25), transparent 50%),
-        radial-gradient(900px 500px at 90% 10%, rgba(99,102,241,.20), transparent 50%),
-        radial-gradient(800px 400px at 50% 110%, rgba(16,185,129,.15), transparent 50%);
+    /* =========================
+       GLOBAL / THEME
+       ========================= */
+    :root{
+      --bg-1:#0f172a; /* slate-900 */
+      --bg-2:#0b1224;
+      --glass: rgba(255,255,255,.06);
+      --glass-weak: rgba(255,255,255,.03);
+      --border: rgba(255,255,255,.10);
+      --text:#e5e7eb;     /* slate-200 */
+      --muted:#94a3b8;    /* slate-400 */
+      --muted-2:#cbd5e1;  /* slate-300 */
+      --sky:#38bdf8;
+      --emerald:#34d399;
+      --indigo:#6366f1;
+      --amber:#fbbf24;
     }
-    .glass { background: rgba(255,255,255,.08); backdrop-filter: blur(10px); }
-    html { scroll-behavior: smooth; }
-    .shadow-soft { box-shadow: 0 10px 30px rgba(2, 6, 23, .15); }
-    .logo { max-width: 6rem; max-height: 6rem; }
+
+    *{ box-sizing:border-box; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+    html,body{ height:100%; background:var(--bg-1); color:var(--text); }
+    a{ color:inherit; text-decoration:none }
+    img{ display:block; max-width:100% }
+
+    /* Animated gradient background */
+    body:before{
+      content:"";
+      position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(900px 500px at 90% 10%, rgba(99,102,241,.18), transparent 55%),
+        radial-gradient(1200px 600px at 10% -10%, rgba(25,150,219,.22), transparent 55%),
+        radial-gradient(800px 400px at 50% 110%, rgba(16,185,129,.14), transparent 55%);
+      pointer-events:none;
+    }
+
+    /* Particles */
+    #particles-container{ position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.35 }
+    .particle{
+      position:absolute; width:4px; height:4px; border-radius:50%;
+      background:rgba(148,163,184,.3); filter:blur(.2px);
+      animation:particle 18s linear infinite;
+    }
+    @keyframes particle{
+      0%{ transform:translate(var(--x,0), 100vh); opacity:0 }
+      10%{ opacity:1 }
+      90%{ opacity:1 }
+      100%{ transform:translate(calc(var(--x,0) + 120px), -120px); opacity:0 }
+    }
+
+    /* Utilities */
+    .glass{ background:var(--glass-weak); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border:1px solid var(--border); }
+    .glass-strong{ background:var(--glass); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border:1px solid var(--border); }
+    .ring{ box-shadow:0 0 0 1px var(--border) inset }
+    .shadow-soft{ box-shadow:0 10px 30px rgba(2,6,23,.18) }
+    .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.85rem 1.2rem; border-radius:999px; font-weight:600; }
+    .btn-primary{ background:linear-gradient(135deg, var(--sky), var(--emerald)); color:#0f172a; }
+    .btn-primary:hover{ filter:brightness(1.05) }
+    .btn-ghost{ border:1px solid var(--border); background:transparent }
+    .btn-ghost:hover{ background:rgba(255,255,255,.05) }
+    .badge{ display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .65rem; border-radius:999px; font-size:.75rem; font-weight:600 }
+    .dot{ width:.45rem; height:.45rem; border-radius:50%; background:var(--emerald); box-shadow:0 0 0 0 rgba(16,185,129,.6); animation:pulse 2s infinite }
+    @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(16,185,129,.6)} 70%{box-shadow:0 0 0 12px rgba(16,185,129,0)} 100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+
+    /* Smooth scroll offset for sticky header */
+    html{ scroll-behavior:smooth; scroll-padding-top:4.25rem }
+
+    /* =========================
+       HEADER / NAV
+       ========================= */
+    #main-header{
+      position:sticky; top:0; z-index:40;
+      border-bottom:1px solid var(--border);
+      background:rgba(2,6,23,.60); backdrop-filter: blur(12px);
+      transition:background-color .25s ease;
+    }
+    #main-header>div{
+      max-width:80rem; margin:0 auto; padding:.5rem 1rem;
+      display:flex; align-items:center; justify-content:space-between; height:64px;
+    }
+    #logo{ display:flex; align-items:center; gap:.6rem; font-weight:700; letter-spacing:.2px }
+    #logo>div{ width:40px; height:40px; border-radius:12px; display:grid; place-items:center;
+      background:linear-gradient(135deg, rgba(56,189,248,.25), rgba(52,211,153,.25)); border:1px solid var(--border) }
+    #logo>div span{ font-weight:800; color:var(--sky) }
+    #desktop-nav{ display:none; gap:1.25rem; align-items:center }
+    #desktop-nav a{ font-size:.95rem; color:var(--muted-2) }
+    #desktop-nav a:hover{ color:var(--text) }
+    #nav-cta{ padding:.6rem 1rem; border-radius:999px; background:linear-gradient(135deg, var(--sky), var(--emerald)); color:#0f172a; font-weight:700 }
+    #mobile-menu-btn{ background:transparent; border:0; color:var(--text) }
+    #mobile-menu{ display:none; border-top:1px solid var(--border) }
+    #mobile-menu a{ display:block; padding:.85rem 1rem; color:var(--muted-2) }
+    #mobile-menu a:hover{ background:rgba(255,255,255,.05); color:var(--text) }
+    @media(min-width:768px){ #desktop-nav{display:flex} #mobile-menu-btn{display:none} }
+
+    /* =========================
+       HERO
+       ========================= */
+    #hero>div{ max-width:80rem; margin:0 auto; padding:2rem 1rem 3rem }
+    #hero .grid{ display:grid; gap:2rem }
+    @media(min-width:1024px){ #hero .grid{ grid-template-columns:1.1fr 1fr; align-items:center; padding:2rem 0 3rem } }
+    #pilot-badge{ display:inline-flex; align-items:center; gap:.5rem; background:rgba(16,185,129,.12); color:#a7f3d0; border:1px solid rgba(16,185,129,.35); padding:.35rem .6rem; border-radius:999px; font-weight:600; font-size:.75rem }
+    #hero h1{ margin:.6rem 0 0; font-weight:800; line-height:1.1 }
+    #hero h1 span:first-child{ display:block; font-size:clamp(2rem, 4vw + 1rem, 3rem) }
+    #hero-highlight{ display:block; font-size:clamp(2.25rem, 4.5vw + 1rem, 3.5rem);
+      background:linear-gradient(135deg, var(--sky) 0%, var(--emerald) 60%, var(--amber) 100%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent }
+    #hero p{ margin-top:1rem; color:var(--muted-2); font-size:1.05rem; max-width:52ch }
+    #stats{ display:flex; gap:.6rem; margin-top:1rem; flex-wrap:wrap }
+    #stats>div{ display:flex; flex-direction:column; align-items:center; justify-content:center; padding:.5rem .8rem; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,.04); font-weight:600; color:var(--muted-2) }
+    #hero-cta{ display:flex; gap:.8rem; margin-top:1.25rem; flex-wrap:wrap }
+    #primary-cta{ composes: btn btn-primary; }
+    #primary-cta, #secondary-cta{ display:inline-flex; align-items:center; gap:.6rem; padding:.9rem 1.2rem; border-radius:999px; font-weight:700 }
+    #primary-cta{ background:linear-gradient(135deg, var(--sky), var(--emerald)); color:#0f172a }
+    #primary-cta:hover{ filter:brightness(1.05) }
+    #secondary-cta{ border:1px solid var(--border); color:var(--text) }
+    #secondary-cta:hover{ background:rgba(255,255,255,.05) }
+
+    #hero-visual{ }
+    #energy-network-card{ border:1px solid var(--border); border-radius:1.25rem; padding:1rem; background:rgba(255,255,255,.05) }
+    #energy-network-card svg{ width:100%; height:auto; display:block; background:linear-gradient(135deg, rgba(56,189,248,.12), rgba(99,102,241,.12), rgba(52,211,153,.12)); border-radius:.9rem; padding:.5rem }
+    #network-status{ display:grid; gap:.35rem; margin-top:.8rem; color:var(--muted-2) }
+    #status-indicators{ display:flex; gap:1rem; margin-top:.4rem }
+    #status-indicators>div{ display:flex; align-items:center; gap:.45rem; font-size:.85rem }
+    #status-indicators>div span:first-child{ width:.5rem; height:.5rem; border-radius:50%; background:var(--emerald); box-shadow:0 0 0 0 rgba(16,185,129,.5); animation:pulse 2s infinite }
+    #status-indicators>div:nth-child(2) span:first-child{ background:var(--sky) }
+    #status-indicators>div:nth-child(3) span:first-child{ background:var(--indigo) }
+
+    /* =========================
+       TRUST BAR
+       ========================= */
+    #trust-indicators>div{ max-width:80rem; margin:0 auto; padding:1.25rem 1rem 2rem }
+    #trust-header{ display:flex; align-items:center; gap:.6rem; color:var(--muted) }
+    #trust-stats{ display:grid; gap:.6rem; grid-template-columns:repeat(2,1fr); margin-top:.8rem }
+    @media(min-width:640px){ #trust-stats{ grid-template-columns:repeat(4,1fr) } }
+    #trust-stats>div{ text-align:center; border:1px solid var(--border); background:rgba(255,255,255,.04); border-radius:1rem; padding:.9rem }
+    #trust-stats>div>div:first-child{ font-size:1.6rem; font-weight:800 }
+    #trust-stats span[data-target]{ display:inline-block; min-width:2ch }
+
+    /* =========================
+       HOW IT WORKS
+       ========================= */
+    #how>div{ max-width:80rem; margin:0 auto; padding:2.5rem 1rem }
+    #how-header{ text-align:center; max-width:60rem; margin:0 auto 1.2rem }
+    #how-badge{ display:inline-block; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,.04); color:var(--muted-2); font-weight:700; font-size:.75rem }
+    #how-header h2{ font-size:clamp(1.8rem, 1rem + 3vw, 2.4rem); margin:.6rem 0 }
+    #how-header h2 span{ color:var(--sky) }
+    #how-header p{ color:var(--muted-2) }
+
+    #process-cards{ display:grid; gap:1rem; grid-template-columns:1fr; margin-top:1.2rem }
+    @media(min-width:640px){ #process-cards{ grid-template-columns:repeat(2,1fr) } }
+    @media(min-width:1024px){ #process-cards{ grid-template-columns:repeat(3,1fr) } }
+    #process-cards article{ border:1px solid var(--border); background:rgba(255,255,255,.05); border-radius:1.2rem; padding:1rem; transition:transform .15s ease, box-shadow .15s ease }
+    #process-cards article:hover{ transform:translateY(-3px); box-shadow:0 12px 30px rgba(2,6,23,.22) }
+    #process-cards article>div:first-child{ display:flex; align-items:center; gap:.6rem; margin-bottom:.3rem }
+    #process-cards article>div:first-child>div{ width:2.2rem; height:2.2rem; display:grid; place-items:center; border-radius:.7rem; background:linear-gradient(135deg, rgba(56,189,248,.25), rgba(99,102,241,.25)) }
+    #process-cards article>div:first-child span{ margin-left:auto; color:var(--muted); font-size:.75rem }
+    #process-cards h3{ margin:.25rem 0 .25rem; font-weight:700 }
+    #process-cards p{ color:var(--muted-2) }
+    #process-cards article>div:last-child{ display:flex; align-items:center; gap:.45rem; margin-top:.7rem; color:var(--muted) }
+
+    /* =========================
+       BENEFITS
+       ========================= */
+    #benefits>div{ max-width:80rem; margin:0 auto; padding:2.5rem 1rem }
+    #benefits-header{ text-align:center; max-width:60rem; margin:0 auto 1.2rem }
+    #benefits-badge{ display:inline-block; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,.04); color:var(--muted-2); font-weight:700; font-size:.75rem }
+    #benefits-header h2{ font-size:clamp(1.8rem, 1rem + 3vw, 2.4rem); margin:.6rem 0 }
+    #benefits-header h2 span{ color:var(--emerald) }
+    #benefits-header p{ color:var(--muted-2) }
+    #benefits-grid{ display:grid; gap:1rem; grid-template-columns:1fr; margin-top:1.2rem }
+    @media(min-width:640px){ #benefits-grid{ grid-template-columns:repeat(2,1fr) } }
+    @media(min-width:1024px){ #benefits-grid{ grid-template-columns:repeat(3,1fr) } }
+    #benefits-grid>div{ border:1px solid var(--border); background:rgba(255,255,255,.05); border-radius:1.2rem; padding:1rem; transition:transform .15s ease, box-shadow .15s ease }
+    #benefits-grid>div:hover{ transform:translateY(-3px); box-shadow:0 12px 30px rgba(2,6,23,.22) }
+    #benefits-grid>div>div:first-child{ width:2.4rem; height:2.4rem; display:grid; place-items:center; border-radius:.7rem; background:linear-gradient(135deg, rgba(56,189,248,.25), rgba(52,211,153,.25)); margin-bottom:.35rem }
+    #benefits-grid h3{ font-weight:700; margin:.1rem 0 }
+    #benefits-grid p{ color:var(--muted-2) }
+    #benefits-grid>div>div:last-child{ display:inline-flex; align-items:center; gap:.35rem; margin-top:.6rem; color:var(--muted) }
+
+    /* =========================
+       SAVINGS CALCULATOR
+       ========================= */
+    #calculator>div{ max-width:80rem; margin:0 auto; padding:2.5rem 1rem }
+    #calculator h2{ font-size:1.8rem; font-weight:800 }
+    #calculator p{ color:var(--muted-2); margin-top:.25rem }
+    #calculator-widget{ margin-top:1rem; border:1px solid var(--border); background:rgba(255,255,255,.05); border-radius:1.2rem; padding:1rem }
+    #slider-container{ margin-bottom:1rem }
+    #bill-slider{ width:100% }
+    #bill-display{ margin-top:.35rem; color:var(--muted-2) }
+    #results{ display:grid; gap:.8rem; grid-template-columns:1fr; }
+    @media(min-width:640px){ #results{ grid-template-columns:repeat(2,1fr) } }
+    #results>div{ text-align:center; border:1px solid var(--border); border-radius:1rem; padding:.9rem; background:rgba(255,255,255,.04) }
+    #results>div div{ font-size:1.8rem; font-weight:800 }
+    #calculator-cta{ display:inline-flex; align-items:center; gap:.5rem; margin-top:1rem; padding:.9rem 1.2rem; border-radius:999px; background:linear-gradient(135deg, var(--sky), var(--emerald)); color:#0f172a; font-weight:800 }
+
+    /* =========================
+       COMMUNITY
+       ========================= */
+    #community>div{ max-width:80rem; margin:0 auto; padding:2.5rem 1rem }
+    #community h2{ font-size:1.8rem; font-weight:800 }
+    #community-cards{ margin-top:1rem; display:grid; gap:1rem; grid-template-columns:1fr }
+    @media(min-width:768px){ #community-cards{ grid-template-columns:repeat(3,1fr) } }
+    #community-cards article{ border:1px solid var(--border); background:rgba(255,255,255,.05); border-radius:1.2rem; padding:1rem }
+    #community-cards article>div{ width:2.2rem; height:2.2rem; display:grid; place-items:center; border-radius:.7rem; background:linear-gradient(135deg, rgba(56,189,248,.25), rgba(99,102,241,.25)); margin-bottom:.35rem }
+    #community-cards h3{ margin:.1rem 0; font-weight:700 }
+    #community-cards p{ color:var(--muted-2) }
+
+    /* =========================
+       SIGNUP FORM
+       ========================= */
+    #signup>div{ max-width:80rem; margin:0 auto; padding:2.5rem 1rem }
+    #signup-header{ text-align:center; max-width:56rem; margin:0 auto .8rem }
+    #signup-badge{ display:inline-block; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,.04); color:var(--muted-2); font-weight:700; font-size:.75rem }
+    #signup-header h2{ font-size:clamp(1.8rem, 1rem + 3vw, 2.4rem); margin:.6rem 0 }
+    #signup-header h2 span{ color:var(--sky) }
+    #signup-header p{ color:var(--muted-2) }
+
+    #interest-form{ margin-top:1rem; border:1px solid var(--border); background:rgba(255,255,255,.05); border-radius:1.2rem; padding:1rem }
+    #form-grid{ display:grid; gap:1rem; grid-template-columns:1fr }
+    @media(min-width:640px){ #form-grid{ grid-template-columns:repeat(2,1fr) } }
+    #form-grid > div, #form-message{ position:relative }
+    #form-grid label, #form-message label{ position:absolute; left:.9rem; top:.65rem; font-size:.8rem; color:var(--muted); pointer-events:none }
+    #form-grid input, #form-message textarea, #form-grid select{
+      width:100%; margin-top:.35rem; padding:1.65rem .9rem .7rem;
+      background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:.9rem; color:var(--text);
+      outline:none;
+    }
+    /* dark select dropdown in all browsers */
+    #form-grid select, #form-grid select option{
+      background-color:#0f172a; color:var(--text);
+    }
+    #form-grid input:focus, #form-message textarea:focus, #form-grid select:focus{ border-color:rgba(56,189,248,.6); box-shadow:0 0 0 3px rgba(56,189,248,.20) }
+
+    #form-consent{ display:flex; gap:.6rem; align-items:flex-start; margin-top:.4rem; color:var(--muted-2) }
+    #form-consent input{ width:1.1rem; height:1.1rem }
+    #privacy-link{ background:none; border:0; color:var(--sky); text-decoration:underline; cursor:pointer }
+
+    #form-actions{ display:flex; gap:.8rem; align-items:center; margin-top:.6rem; flex-wrap:wrap }
+    #submit-btn{ display:inline-flex; align-items:center; gap:.6rem; padding:.9rem 1.2rem; border-radius:999px; background:linear-gradient(135deg, var(--sky), var(--emerald)); color:#0f172a; font-weight:800; border:0; cursor:pointer }
+    #form-status{ color:var(--muted-2); font-size:.95rem }
+
+    /* =========================
+       FAQ
+       ========================= */
+    #faq>div{ max-width:80rem; margin:0 auto; padding:2.5rem 1rem }
+    #faq-header{ text-align:center; max-width:56rem; margin:0 auto .8rem }
+    #faq-badge{ display:inline-block; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--border); background:rgba(255,255,255,.04); color:var(--muted-2); font-weight:700; font-size:.75rem }
+    #faq-header h2{ font-size:clamp(1.8rem, 1rem + 3vw, 2.4rem); margin:.6rem 0 }
+    #faq-header h2 span{ color:var(--emerald) }
+    #faq-header p{ color:var(--muted-2) }
+    #faq-list{ display:grid; gap:.6rem; grid-template-columns:1fr; }
+    @media(min-width:640px){ #faq-list{ grid-template-columns:repeat(2,1fr) } }
+    #faq-list details{ border:1px solid var(--border); background:rgba(255,255,255,.05); border-radius:1.2rem; padding:1rem }
+    #faq-list summary{ list-style:none; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-weight:700 }
+    #faq-list p{ color:var(--muted-2); margin-top:.4rem }
+
+    /* =========================
+       FINAL CTA
+       ========================= */
+    #final-cta>div{ max-width:80rem; margin:0 auto; padding:2rem 1rem 2.8rem; position:relative }
+    #cta-background>div{ position:absolute; inset:0; border-radius:1.2rem; filter:blur(40px); opacity:.35; pointer-events:none }
+    #cta-background>div:first-child{ background: radial-gradient(600px 300px at 20% 10%, rgba(56,189,248,.4), transparent 60%) }
+    #cta-background>div:last-child{ background: radial-gradient(600px 300px at 80% 90%, rgba(52,211,153,.4), transparent 60%) }
+    #cta-content{ position:relative; text-align:center; border:1px solid var(--border); background:rgba(255,255,255,.05); border-radius:1.2rem; padding:1.2rem }
+    #cta-content h2{ font-size:clamp(1.6rem, 1rem + 2.2vw, 2.2rem); font-weight:800 }
+    #cta-content p{ color:var(--muted-2); margin:.3rem 0 .8rem }
+    #cta-buttons{ display:flex; align-items:center; justify-content:center; gap:.8rem; flex-wrap:wrap }
+    #cta-buttons a{ display:inline-flex; align-items:center; gap:.6rem; padding:.9rem 1.2rem; border-radius:999px; font-weight:800; border:1px solid var(--border) }
+    #cta-buttons a:first-child{ background:linear-gradient(135deg, var(--sky), var(--emerald)); color:#0f172a; border:0 }
+
+    /* =========================
+       FOOTER
+       ========================= */
+    #footer>div{ max-width:80rem; margin:0 auto; padding:2.2rem 1rem }
+    #footer-content{ display:grid; gap:1.2rem; grid-template-columns:1fr }
+    @media(min-width:900px){ #footer-content{ grid-template-columns:1.2fr .9fr .9fr } }
+    #footer-logo{ display:flex; align-items:center; gap:.6rem; margin-bottom:.4rem }
+    #footer-logo>div{ width:40px; height:40px; border-radius:12px; display:grid; place-items:center;
+      background:linear-gradient(135deg, rgba(56,189,248,.25), rgba(52,211,153,.25)); border:1px solid var(--border) }
+    #footer-company p{ color:var(--muted-2) }
+    #social-links{ display:flex; gap:.6rem; margin-top:.6rem }
+    #social-links a{ width:36px; height:36px; display:grid; place-items:center; border-radius:.6rem; border:1px solid var(--border); background:rgba(255,255,255,.04) }
+    #footer-links h3,#footer-contact h3{ font-weight:800 }
+    #footer-links a{ color:var(--muted-2) }
+    #footer-links a:hover{ color:var(--text) }
+    #footer-contact ul{ color:var(--muted-2); display:grid; gap:.35rem; margin-top:.35rem }
+    #footer-bottom{ display:flex; align-items:center; justify-content:space-between; gap:.8rem; border-top:1px solid var(--border); padding-top:1rem; margin-top:1rem; color:var(--muted) }
+    #footer-legal{ display:flex; gap:.8rem; align-items:center }
+    #privacy-footer-link{ background:none; border:0; color:var(--muted-2); text-decoration:underline; cursor:pointer }
+
+    /* =========================
+       PRIVACY MODAL
+       ========================= */
+    #privacy-modal[hidden]{ display:none }
+    #privacy-modal{ position:fixed; inset:0; z-index:60; display:grid; place-items:center; padding:1rem }
+    #modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.6) }
+    #modal-content{ position:relative; width:min(680px, 100%); border-radius:1rem; border:1px solid var(--border); background:#0b1224; padding:1rem }
+    #modal-header{ display:flex; align-items:center; justify-content:space-between }
+    #privacy-content{ margin-top:.5rem; max-height:60vh; overflow:auto; color:var(--muted-2) }
+    #modal-footer{ display:flex; justify-content:flex-end; margin-top:.8rem }
+    #accept-privacy{ background:linear-gradient(135deg, var(--sky), var(--emerald)); color:#0f172a; border:0; border-radius:.7rem; padding:.6rem .9rem; font-weight:800 }
+
+    /* Toast + Confetti */
+    .toast{ position:fixed; left:50%; bottom:1rem; transform:translateX(-50%); background:rgba(56,189,248,.95); color:#0f172a; padding:.7rem 1rem; border-radius:.8rem; box-shadow:0 10px 30px rgba(2,6,23,.25); z-index:70; font-weight:700 }
+    .confetti{ position:fixed; width:6px; height:6px; top:-8px; background:hsl(var(--h,200) 90% 60%); z-index:80; pointer-events:none }
+
+    /* --- Energy network v2 (hub & spokes) --- */
+.flow-bg {
+  background:
+    radial-gradient(60% 80% at 50% 30%, rgba(56,189,248,.12), transparent 60%),
+    radial-gradient(70% 100% at 60% 80%, rgba(52,211,153,.10), transparent 60%),
+    rgba(255,255,255,.04);
+  border-radius: 1rem;
+}
+
+.node-ring { filter: drop-shadow(0 0 10px rgba(56,189,248,.35)); }
+.node-label { font: 700 11px/1 Inter, system-ui, sans-serif; fill: #cbd5e1; letter-spacing:.2px; }
+
+.ring-sky   { stroke: #38bdf8; }
+.ring-emer  { stroke: #34d399; }
+.ring-rose  { stroke: #f43f5e; }
+.ring-amber { stroke: #f59e0b; }
+
+.flow-path  {
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 6 10;
+  animation: flow 2.6s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(56,189,248,.25));
+}
+.flow-path.slow   { animation-duration: 3.4s; }
+.flow-path.fast   { animation-duration: 2.0s; }
+
+@keyframes flow { to { stroke-dashoffset: -32; } }
+
+.arrow {
+  fill: none; stroke-width: 2.2; stroke-linecap: round;
+  animation: arrowPulse 1.6s ease-in-out infinite;
+}
+@keyframes arrowPulse {
+  0%,100% { opacity:.55; }
+  50%     { opacity: 1; }
+}
+.gradient-text {
+  background: linear-gradient(135deg, #60a5fa 0%, #34d399 50%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
   </style>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100 bg-aurora">
-  <!-- Header -->
-  <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/70 backdrop-blur">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <a href="#top" class="flex items-center gap-2">
-          <img src="assets/WattlyLogo2.png" alt="Wattly logo" class="logo">
-        <!-- <span class="font-semibold tracking-tight">Wattly</span> -->
+<body>
+
+  <!-- Particle Background Container -->
+  <div id="particles-container"></div>
+
+  <!-- HEADER / NAV -->
+  <header id="main-header">
+    <div>
+      <a href="#hero" id="logo" aria-label="Wattly home">
+        <img src="assets/WattlyLogo2.png" alt="Wattly" class="logo">
+        <span>Wattly</span>
+      </a>
+
+      <nav id="desktop-nav" aria-label="Primary">
+        <a href="#how">How it works</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#faq">FAQ</a>
+        <a href="#signup"
+        class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-400 to-emerald-400 
+                px-5 py-2 text-sm font-semibold text-white shadow-lg hover:from-sky-500 hover:to-emerald-500">
+        <span>Join Pilot</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+        </svg>
         </a>
-        <nav class="hidden md:flex items-center gap-6 text-sm">
-          <a href="#how" class="hover:text-sky-300">How it works</a>
-          <a href="#benefits" class="hover:text-sky-300">Benefits</a>
-          <a href="#faq" class="hover:text-sky-300">FAQ</a>
-          <a href="#signup" class="inline-flex items-center gap-2 rounded-full bg-sky-500 px-4 py-2 font-medium text-slate-950 hover:bg-sky-400 shadow-soft">
-            <span>Register interest</span>
-          </a>
-        </nav>
-        <button class="md:hidden inline-flex items-center justify-center rounded-md p-2 hover:bg-white/5" aria-label="Open menu" id="openMenu">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
-      </div>
+
+      </nav>
+
+      <button id="mobile-menu-btn" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
     </div>
-    <!-- Mobile menu -->
-    <div id="mobileMenu" class="md:hidden hidden border-t border-white/10">
-      <div class="mx-auto max-w-7xl px-4 py-3 space-y-2">
-        <a href="#how" class="block py-2">How it works</a>
-        <a href="#benefits" class="block py-2">Benefits</a>
-        <a href="#faq" class="block py-2">FAQ</a>
-        <a href="#signup" class="block py-2 text-sky-300 font-medium">Register interest</a>
-      </div>
-    </div>
+
+    <nav id="mobile-menu" aria-label="Mobile">
+      <a href="#how">How it works</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#faq">FAQ</a>
+      <a href="#signup">Join Pilot Program →</a>
+    </nav>
   </header>
 
-  <!-- Hero -->
-<section id="top" class="relative overflow-hidden">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center py-10 sm:py-12 lg:py-24">
-      <div>
-        <h1 class="text-3xl sm:text-5xl font-semibold leading-tight tracking-tight">
-          Smarter energy, <span class="text-sky-400">together</span>.
+  <!-- HERO -->
+  <section id="hero">
+    <div class="grid">
+      <!-- Left -->
+      <div id="hero-content">
+        <div id="pilot-badge"><span class="dot"></span><span>Pilot Program Open</span></div>
+        <h1>
+          <span>Smarter energy,</span>
+          <span id="hero-highlight">together.</span>
         </h1>
-        <p class="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed max-w-prose">
-          Wattly brings communities together to support local renewable power. By linking homes, businesses, and building owners into a Virtual Energy Network, everyone can buy and sell cleaner energy locally, cut costs, and strengthen the grid.
+        <p>
+          Join the community-powered virtual energy network. Share local renewable power,
+          cut costs by up to 20%, and build a sustainable future together.
         </p>
-        <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
-          <a href="#signup" class="inline-flex items-center justify-center rounded-full bg-sky-500 px-5 sm:px-6 py-3 font-medium text-slate-950 hover:bg-sky-400 shadow-soft">Join the pilot</a>
-          <a href="#how" class="inline-flex items-center justify-center rounded-full ring-1 ring-white/20 px-5 sm:px-6 py-3 font-medium hover:bg-white/5">How it works</a>
+
+        <div id="stats">
+          <div><div><span data-target="13">0</span>%</div><div>Average savings</div></div>
+          <div><div><span data-target="100">0</span>%</div><div>Clean energy</div></div>
+          <div><div><span data-target="250">0</span>+</div><div>Homes ready</div></div>
         </div>
-        <div class="mt-5 flex items-center gap-4 text-sm text-slate-400">
-          <div class="flex items-center gap-2"><span class="inline-block h-2 w-2 rounded-full bg-emerald-400"></span> Lower energy costs</div>
-          <div class="flex items-center gap-2"><span class="inline-block h-2 w-2 rounded-full bg-sky-400"></span> Community first</div>
+
+        <div id="hero-cta">
+          <a href="#signup" id="primary-cta">
+            <span>Join the Pilot Program</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </a>
+          <a href="#how" id="secondary-cta">See How It Works</a>
         </div>
       </div>
 
-      <div class="glass rounded-3xl p-4 sm:p-6 border border-white/10 shadow-soft">
-        <div class="aspect-[16/10] w-full rounded-2xl bg-gradient-to-br from-sky-500/20 via-indigo-500/20 to-emerald-500/20 grid place-items-center p-4">
-          <div class="text-center">
-            <p class="text-sm uppercase tracking-widest text-slate-300">Virtual Energy Network</p>
-            <h3 class="mt-2 text-2xl font-semibold">Producers ↔ Consumers</h3>
-            <p class="mt-2 text-slate-300 max-w-md mx-auto">Excess solar exported to local neighbours and businesses at fair, transparent rates.</p>
-
-            <!-- Pills wrap on mobile -->
-            <div class="mt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-slate-300 text-sm sm:text-base">
-              <span class="px-3 py-1 rounded-full bg-white/10">Rooftop Solar</span>
-              <svg class="h-5 w-5 sm:h-6 sm:w-6 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-              <span class="px-3 py-1 rounded-full bg-white/10">Homes</span>
-              <svg class="h-5 w-5 sm:h-6 sm:w-6 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-              <span class="px-3 py-1 rounded-full bg-white/10">Businesses</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <!-- Right -->
+      <div id="hero-visual">
+<!-- Energy Network Card (auto-balancing labels) -->
+<div id="energy-network-card" class="glass rounded-3xl p-6 border border-white/10 shadow-soft">
+  <div class="text-center mb-6">
+    <p class="text-sm uppercase tracking-widest text-slate-300">Virtual Energy Network</p>
+    <h3 class="mt-2 text-2xl font-semibold">Producers ↔ Consumers</h3>
+    <p class="mt-2 text-slate-400 max-w-xl mx-auto">
+      Homes, businesses, and the Wattly Grid exchange clean energy through Wattly.
+      Providers send surplus in; Wattly distributes to local consumers at fair, transparent rates.
+    </p>
   </div>
-</section>
+
+  <svg viewBox="0 0 560 400" class="mx-auto w-full max-w-3xl" aria-label="Wattly energy flows">
+    <defs>
+      <linearGradient id="g-provider" x1="0" x2="1">
+        <stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#38bdf8"/>
+      </linearGradient>
+      <linearGradient id="g-consumer" x1="0" x2="1">
+        <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#34d399"/>
+      </linearGradient>
+      <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+        <feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <marker id="arrow-emerald" markerWidth="12" markerHeight="12" refX="8" refY="6" orient="auto">
+        <path d="M0,2 L8,6 L0,10" fill="none" stroke="#34d399" stroke-width="2"/>
+      </marker>
+      <marker id="arrow-sky" markerWidth="12" markerHeight="12" refX="8" refY="6" orient="auto">
+        <path d="M0,2 L8,6 L0,10" fill="none" stroke="#38bdf8" stroke-width="2"/>
+      </marker>
+      <!-- icons -->
+      <g id="icon-home" stroke="#e5eefb" stroke-width="2" fill="none"><path d="M6 14 L18 4 L30 14 V30 H6 Z"/><path d="M14 30 V22 H22 V30"/></g>
+      <g id="icon-biz" stroke="#e5eefb" stroke-width="2" fill="none"><rect x="3" y="6" width="30" height="24" rx="3"/><path d="M9 12h9M9 18h9M9 24h9M21 12h9M21 18h9M21 24h9"/></g>
+      <g id="icon-solar" stroke="#e5eefb" stroke-width="2" fill="none"><rect x="4" y="7" width="28" height="14" rx="2"/><line x1="4" y1="14" x2="32" y2="14"/><line x1="13" y1="7" x2="13" y2="21"/><line x1="23" y1="7" x2="23" y2="21"/><path d="M1 26 H35"/></g>
+      <g id="icon-chip" stroke="#e5eefb" stroke-width="2" fill="none"><rect x="5" y="5" width="26" height="26" rx="4"/><rect x="12" y="12" width="12" height="12" rx="2"/><path d="M18 5V1 M26 7l3-3 M31 18h4 M26 27l3 3 M18 31v4 M10 27l-3 3 M5 18H1 M10 7L7 4"/></g>
+    </defs>
+
+    <!-- flows (behind hub) -->
+    <path d="M470,90 Q400,135 280,190" stroke="url(#g-provider)" stroke-width="2.6" fill="none"
+          stroke-dasharray="7 12" marker-end="url(#arrow-emerald)" filter="url(#glow)">
+      <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2.2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M120,80 Q180,120 280,190" stroke="url(#g-provider)" stroke-width="2.6" fill="none"
+          stroke-dasharray="7 12" marker-end="url(#arrow-emerald)" filter="url(#glow)">
+      <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M75,250 Q170,230 280,190" stroke="url(#g-provider)" stroke-width="2.6" fill="none"
+          stroke-dasharray="7 12" marker-end="url(#arrow-emerald)" filter="url(#glow)">
+      <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2.6s" repeatCount="indefinite"/>
+    </path>
+    <path d="M350,310 Q330,250 280,190" stroke="url(#g-provider)" stroke-width="2.6" fill="none"
+          stroke-dasharray="7 12" marker-end="url(#arrow-emerald)" filter="url(#glow)">
+      <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2.4s" repeatCount="indefinite"/>
+    </path>
+    <path d="M280,190 Q360,210 440,250" stroke="url(#g-consumer)" stroke-width="2.6" fill="none"
+          stroke-dasharray="7 12" marker-end="url(#arrow-sky)" filter="url(#glow)">
+      <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2.3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M280,190 Q220,260 180,325" stroke="url(#g-consumer)" stroke-width="2.6" fill="none"
+          stroke-dasharray="7 12" marker-end="url(#arrow-sky)" filter="url(#glow)">
+      <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2.1s" repeatCount="indefinite"/>
+    </path>
+    <path d="M280,190 Q200,170 110,140" stroke="url(#g-consumer)" stroke-width="2.6" fill="none"
+          stroke-dasharray="7 12" marker-end="url(#arrow-sky)" filter="url(#glow)">
+      <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2.7s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- nodes (labels are auto-positioned by JS) -->
+    <g data-node transform="translate(470,90)" data-color="emerald" text-anchor="middle">
+      <circle r="30" stroke="#34d399" stroke-width="2" fill="none" filter="url(#glow)"/>
+      <g transform="translate(-15,-14)"><use href="#icon-solar"/></g>
+      <text data-label fill="#34d399" font-size="12">Wattly Grid</text>
+    </g>
+
+    <g data-node transform="translate(120,80)" data-color="emerald" text-anchor="middle">
+      <circle r="26" stroke="#34d399" stroke-width="2" fill="none" filter="url(#glow)"/>
+      <g transform="translate(-15,-12)"><use href="#icon-home"/></g>
+      <text data-label fill="#34d399" font-size="11">+0.8 kW • Home</text>
+    </g>
+
+    <g data-node transform="translate(75,250)" data-color="emerald" text-anchor="middle">
+      <circle r="26" stroke="#34d399" stroke-width="2" fill="none" filter="url(#glow)"/>
+      <g transform="translate(-15,-12)"><use href="#icon-home"/></g>
+      <text data-label fill="#34d399" font-size="11">+0.5 kW • Home</text>
+    </g>
+
+    <g data-node transform="translate(440,250)" data-color="sky" text-anchor="middle">
+      <circle r="26" stroke="#38bdf8" stroke-width="2" fill="none" filter="url(#glow)"/>
+      <g transform="translate(-15,-12)"><use href="#icon-home"/></g>
+      <text data-label fill="#38bdf8" font-size="11">–1.1 kW • Home</text>
+    </g>
+
+    <g data-node transform="translate(180,325)" data-color="sky" text-anchor="middle">
+      <circle r="26" stroke="#38bdf8" stroke-width="2" fill="none" filter="url(#glow)"/>
+      <g transform="translate(-15,-12)"><use href="#icon-home"/></g>
+      <text data-label fill="#38bdf8" font-size="11">–0.7 kW • Home</text>
+    </g>
+
+    <g data-node transform="translate(350,310)" data-color="emerald" text-anchor="middle">
+      <circle r="28" stroke="#34d399" stroke-width="2" fill="none" filter="url(#glow)"/>
+      <g transform="translate(-15,-14)"><use href="#icon-biz"/></g>
+      <text data-label fill="#34d399" font-size="11">+1.6 kW • Business</text>
+    </g>
+
+    <g data-node transform="translate(110,140)" data-color="sky" text-anchor="middle">
+      <circle r="28" stroke="#38bdf8" stroke-width="2" fill="none" filter="url(#glow)"/>
+      <g transform="translate(-15,-14)"><use href="#icon-biz"/></g>
+      <text data-label fill="#38bdf8" font-size="11">–0.9 kW • Business</text>
+    </g>
+
+    <!-- central hub (Wattly) drawn last -->
+    <g transform="translate(280,190)" text-anchor="middle">
+      <circle r="54" fill="none" stroke="#38bdf8" stroke-opacity=".25"/>
+      <circle r="40" fill="none" stroke="#38bdf8" stroke-opacity=".35"/>
+      <circle r="28" fill="#0ea5e9" opacity=".3"/>
+      <circle r="22" fill="#0ea5e9"/>
+      <g transform="translate(-16,-16)"><use href="#icon-chip"/></g>
+      <text y="60" fill="#e5eefb" font-size="13" font-weight="700">Wattly</text>
+    </g>
+  </svg>
+
+  <div class="flex justify-center gap-6 mt-4 text-sm text-slate-400">
+    <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-400"></span> Provider → Wattly</span>
+    <span class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-sky-400"></span> Wattly → Consumer</span>
+  </div>
+</div>
+
+<script>
+  // Auto-balance & clamp node labels so they never overflow the SVG/card
+  (function () {
+    const card = document.querySelector('#energy-network-card');
+    if (!card) return;
+    const svg = card.querySelector('svg');
+
+    function parseTranslate(g) {
+      const m = /translate\(([-\d.]+)\s*,\s*([-\d.]+)\)/.exec(g.getAttribute('transform') || '');
+      return m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : { x: 0, y: 0 };
+    }
+
+    function placeLabels() {
+      const vb = svg.viewBox.baseVal;               // SVG viewBox coords
+      const cx = vb.x + vb.width / 2;
+      const cy = vb.y + vb.height / 2;
+      const PAD = 16;                                // inner padding from edges
+      const SIDE_OFFSET = 36;                        // distance from node
+      const VERT_OFFSET = 46;                        // above/below distance
+      const AXIS_TOL = 36;                           // "near-axis" threshold
+
+      // Ensure we can measure bbox in current viewport
+      const svgPoint = svg.createSVGPoint();
+
+      card.querySelectorAll('[data-node]').forEach(g => {
+        const { x, y } = parseTranslate(g);
+        const label = g.querySelector('text[data-label]');
+        if (!label) return;
+
+        // 1) Initial side decision (left/right vs above/below)
+        let anchor, lx, ly;
+        const nearAxis = Math.abs(x - cx) < AXIS_TOL;
+
+        if (nearAxis) {
+          anchor = 'middle';
+          lx = 0;
+          ly = (y < cy) ? -VERT_OFFSET : VERT_OFFSET;
+        } else if (x < cx) {
+          anchor = 'end';
+          lx = -SIDE_OFFSET;
+          ly = 4;
+        } else {
+          anchor = 'start';
+          lx = SIDE_OFFSET;
+          ly = 4;
+        }
+
+        label.setAttribute('text-anchor', anchor);
+        label.setAttribute('x', lx);
+        label.setAttribute('y', ly);
+
+        // 2) Compute screen-space bbox to check overflow
+        //    Convert node+label coords into absolute viewBox coordinates
+        const temp = label.getBBox ? label.getBBox() : { x: 0, y: 0, width: 0, height: 0 };
+
+        // label origin in viewBox space
+        const originX = x + lx;
+        const originY = y + ly;
+
+        // approximate bbox in viewBox coords (text bbox is already in the label's local system)
+        let box = { 
+          x: originX + (anchor === 'start' ? 0 : anchor === 'end' ? -temp.width : -temp.width / 2),
+          y: originY - temp.height + 3,
+          width: temp.width,
+          height: temp.height
+        };
+
+        // 3) Clamp horizontally: if overflow left/right, flip side or nudge inward
+        const leftOverflow  = box.x < vb.x + PAD;
+        const rightOverflow = (box.x + box.width) > (vb.x + vb.width - PAD);
+
+        if (!nearAxis && (leftOverflow || rightOverflow)) {
+          // Flip side
+          if (anchor === 'start') {         // was right; flip to left
+            anchor = 'end'; lx = -SIDE_OFFSET;
+          } else if (anchor === 'end') {    // was left; flip to right
+            anchor = 'start'; lx = SIDE_OFFSET;
+          }
+          label.setAttribute('text-anchor', anchor);
+          label.setAttribute('x', lx);
+
+          // Recompute bbox after flip
+          const t2 = label.getBBox ? label.getBBox() : temp;
+          box = { 
+            x: x + lx + (anchor === 'start' ? 0 : anchor === 'end' ? -t2.width : -t2.width/2),
+            y: y + ly - t2.height + 3, 
+            width: t2.width, 
+            height: t2.height
+          };
+        }
+
+        // Final nudge if still a bit out
+        let nudgeX = 0;
+        if (box.x < vb.x + PAD) {
+          nudgeX = (vb.x + PAD) - box.x;
+        } else if (box.x + box.width > vb.x + vb.width - PAD) {
+          nudgeX = (vb.x + vb.width - PAD) - (box.x + box.width);
+        }
+        if (nudgeX !== 0) {
+          label.setAttribute('x', lx + nudgeX);
+        }
+
+        // 4) Vertical clamp (rare, but protect top/bottom)
+        const aboveOverflow = (box.y < vb.y + PAD);
+        const belowOverflow = (box.y + box.height > vb.y + vb.height - PAD);
+
+        if (aboveOverflow || belowOverflow) {
+          // Move above or below the node
+          anchor = 'middle';
+          lx = 0;
+          ly = (y < cy) ? -VERT_OFFSET : VERT_OFFSET;
+          label.setAttribute('text-anchor', anchor);
+          label.setAttribute('x', lx);
+          label.setAttribute('y', ly);
+        }
+      });
+    }
+
+    function debounce(fn, ms) { let t; return () => { clearTimeout(t); t = setTimeout(fn, ms); }; }
+    placeLabels();
+    window.addEventListener('resize', debounce(placeLabels, 120));
+  })();
+</script>
 
 
-  <!-- Logos / social proof (optional placeholders) -->
-  <section aria-label="as-seen-with" class="border-t border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      <p class="text-center text-sm text-slate-400">Pilot partners & supporters (TBA)</p>
-      <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-6 opacity-60">
-        <div class="h-10 rounded bg-white/5"></div>
-        <div class="h-10 rounded bg-white/5"></div>
-        <div class="h-10 rounded bg-white/5"></div>
-        <div class="h-10 rounded bg-white/5"></div>
       </div>
     </div>
   </section>
 
-  <!-- How it works -->
-  <section id="how" class="border-t border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-      <div class="max-w-2xl">
-        <h2 class="text-3xl font-semibold tracking-tight">How Wattly works</h2>
-        <p class="mt-3 text-slate-300">We link buyers and sellers into a virtual energy network that shares power and value.</p>
+  <!-- TRUST BAR -->
+  <section id="trust-indicators">
+    <div>
+      <div id="trust-header">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span>Trusted by forward-thinking communities</span>
       </div>
-      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Card 1 -->
-        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <!-- Solar panel icon -->
-              <svg class="h-6 w-6 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
-                      d="M3 7h18M3 7l2 10h14l2-10M7 7l1 10M12 7v10M16 7l-1 10" />
-              </svg>
-              <h3 class="text-lg font-medium">Generate</h3>
-            </div>
-            <span class="text-xs text-slate-400">Step 1</span>
-          </div>
-          <p class="mt-2 text-slate-300">Residential and commercial solar use what they need and export the rest.</p>
-        </article>
-        <!-- Card 2 -->
-        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <!-- Pool icon -->
-              <svg class="h-6 w-6 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
-                      d="M4 12c4 2 12 2 16 0M4 16c4 2 12 2 16 0M4 8c4 2 12 2 16 0" />
-              </svg>
-              <h3 class="text-lg font-medium">Pool</h3>
-            </div>
-            <span class="text-xs text-slate-400">Step 2</span>
-          </div>
-          <p class="mt-2 text-slate-300">Exports are pooled virtually and made available to nearby users.</p>
-        </article>
-        <!-- Card 3 -->
-        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <!-- Match icon -->
-              <svg class="h-6 w-6 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
-                      d="M7 8l5 5 5-5M7 16h10" />
-              </svg>
-              <h3 class="text-lg font-medium">Match</h3>
-            </div>
-            <span class="text-xs text-slate-400">Step 3</span>
-          </div>
-          <p class="mt-2 text-slate-300">Smart matching ensures fair pricing and prioritises local consumption.</p>
-        </article>
-        <!-- Card 4 -->
-        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <!-- Savings icon -->
-              <svg class="h-6 w-6 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
-                      d="M12 3v18M6 7h8a4 4 0 010 8H6" />
-              </svg>
-              <h3 class="text-lg font-medium">Save</h3>
-            </div>
-            <span class="text-xs text-slate-400">Step 4</span>
-          </div>
-          <p class="mt-2 text-slate-300">Participants see lower bills; producers earn more than wholesale export rates.</p>
-        </article>
-        <!-- Card 5 -->
-        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <!-- Dashboard icon -->
-              <svg class="h-6 w-6 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
-                      d="M3 12h18M3 6h18M3 18h10" />
-              </svg>
-              <h3 class="text-lg font-medium">Engage</h3>
-            </div>
-            <span class="text-xs text-slate-400">Step 5</span>
-          </div>
-          <p class="mt-2 text-slate-300">Dashboards track usage, savings, and carbon impact for all participants.</p>
-        </article>
-        <!-- Card 6 -->
-        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <!-- Growth icon -->
-              <svg class="h-6 w-6 text-pink-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
-                      d="M4 12l4-4 4 4 6-6M4 20h16" />
-              </svg>
-              <h3 class="text-lg font-medium">Scale</h3>
-            </div>
-            <span class="text-xs text-slate-400">Step 6</span>
-          </div>
-          <p class="mt-2 text-slate-300">As more roofs and organisations join, local supply, resilience, and community benefit grow.</p>
-        </article>
+
+      <div id="trust-stats">
+        <div><div><span data-target="150">0</span></div><div>Homes interested</div></div>
+        <div><div><span data-target="9">0</span></div><div>Partner businesses</div></div>
+        <div><div><span data-target="1.5">0</span>MW</div><div>Capacity ready</div></div>
+        <div><div><span data-target="3">0</span></div><div>Regions launching</div></div>
       </div>
     </div>
   </section>
 
-  <!-- Communities -->
-  <section class="border-t border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-      <h2 class="text-3xl font-bold mb-12">Support Local Schools & Community Groups</h2>
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div>
+      <div id="how-header">
+        <div id="how-badge"><span>How It Works</span></div>
+        <h2>The energy revolution starts <span class="gradient-text">locally</span></h2>
+        <p>We connect producers with consumers in a virtual network that benefits everyone</p>
+      </div>
 
-      <div class="grid gap-8 md:grid-cols-3 text-left">
-        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <div class="flex items-center gap-3 mb-2">
-            <svg class="h-6 w-6 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16v12H4zM8 10h8"/>
+      <div id="process-cards">
+        <!-- Step cards (unchanged markup) -->
+        <!-- Step 1 -->
+        <article>
+          <div>
+            <div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </div>
+            <span>STEP 1</span>
+          </div>
+          <h3>Generate Clean Energy</h3>
+          <p>Solar panels capture renewable energy, using what they need and sharing excess with the community.</p>
+          <div><span>Active generation</span><span></span></div>
+        </article>
+
+        <!-- Step 2 -->
+        <article>
+          <div>
+            <div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <span>STEP 2</span>
+          </div>
+          <h3>Smart Distribution</h3>
+          <p>AI-powered system pools and distributes energy to nearby consumers in real-time.</p>
+          <p></p>
+          <div><span>Optimizing flow</span><span></span></div>
+        </article>
+
+        <!-- Step 3 -->
+        <article>
+          <div>
+            <div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+            </div>
+            <span>STEP 3</span>
+          </div>
+          <h3>Fair Matching</h3>
+          <p>Transparent pricing ensures producers earn more and consumers pay less.</p>
+          <div><span>Trust verified</span>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
             </svg>
-            <h3 class="text-xl font-semibold">Community Access</h3>
           </div>
-          <p class="text-slate-300">
-            Schools, clubs, and community centres can join as energy consumers in the Virtual Energy Network.
-          </p>
         </article>
 
-        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <div class="flex items-center gap-3 mb-2">
-            <svg class="h-6 w-6 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 3l3 5 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1 3-5"/>
-            </svg>
-            <h3 class="text-xl font-semibold">Local Power</h3>
+        <!-- Step 4 -->
+        <article>
+          <div>
+            <div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <span>STEP 4</span>
           </div>
-          <p class="text-slate-300">
-            Their power comes from local rooftops, helping them save money and reduce reliance on traditional wholesale markets.
-          </p>
+          <h3>Save Together</h3>
+          <p>Community members see immediate savings while supporting local renewable growth.</p>
+          <div><span>Avg. 13% savings</span>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
         </article>
 
-        <article class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <div class="flex items-center gap-3 mb-2">
-            <svg class="h-6 w-6 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M7 12l3 3 7-7"/>
-            </svg>
-            <h3 class="text-xl font-semibold">Community Impact</h3>
+        <!-- Step 5 -->
+        <article>
+          <div>
+            <div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <span>STEP 5</span>
           </div>
-          <p class="text-slate-300">
-            Every time you participate, you’re not just cutting costs or going greener — you’re directly supporting local organisations that make your community stronger.
-          </p>
+          <h3>Track Impact</h3>
+          <p>Real-time dashboards show your usage, savings, and environmental impact.</p>
+          <div><span>Live monitoring</span><div><span></span><span></span><span></span></div></div>
+        </article>
+
+        <!-- Step 6 -->
+        <article>
+          <div>
+            <div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <span>STEP 6</span>
+          </div>
+          <h3>Grow Community</h3>
+          <p>As more join, the network becomes stronger, cheaper, and more resilient.</p>
+          <div><span>Network expanding</span>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- Benefits -->
-  <section id="benefits" class="border-t border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <h2 class="text-3xl font-semibold tracking-tight">Why join Wattly?</h2>
-          <ul class="mt-6 space-y-4 text-slate-300">
-            <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-emerald-400"></span> Lower and more predictable power costs</li>
-            <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky-400"></span> Support local generation and keep value in your community</li>
-            <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-indigo-400"></span> Real-time insights and transparent pricing</li>
-            <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-yellow-400"></span> Reduced carbon footprint</li>
-            <li class="flex gap-3"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-pink-400"></span> Positive PR for participating businesses</li>
-          </ul>
+  <!-- BENEFITS -->
+  <section id="benefits">
+    <div>
+      <div id="benefits-header">
+        <div id="benefits-badge"><span>Benefits</span></div>
+        <h2>Why communities <span class="gradient-text">love Wattly</span></h2>
+        <p>Real benefits for real people. Join thousands making the switch to community energy.</p>
+      </div>
+
+      <div id="benefits-grid">
+        <!-- 6 benefit tiles (unchanged markup) -->
+        <div><div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg></div>
+          <h3>Lower Energy Bills</h3><p>Save an average of 13% on your monthly energy costs with transparent, community-first pricing.</p>
+          <div><span>Calculate savings</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
         </div>
-        <div class="glass rounded-2xl border border-white/10 p-6 shadow-soft">
-          <h3 class="text-xl font-medium">Who is it for?</h3>
-          <div class="mt-4 grid sm:grid-cols-2 gap-4 text-slate-300">
-            <div class="rounded-xl bg-white/5 p-4">
-              <p class="font-medium">Residents & SMEs</p>
-              <p class="mt-1 text-sm">Buy local renewable power and track savings.</p>
-            </div>
-            <div class="rounded-xl bg-white/5 p-4">
-              <p class="font-medium">Building Owners</p>
-              <p class="mt-1 text-sm">Monetise roof space and support your community.</p>
-            </div>
-            <div class="rounded-xl bg-white/5 p-4">
-              <p class="font-medium">Power Companies</p>
-              <p class="mt-1 text-sm">Engage customers, add local supply, and build goodwill.</p>
-            </div>
-            <div class="rounded-xl bg-white/5 p-4">
-              <p class="font-medium">Lines Companies</p>
-              <p class="mt-1 text-sm">Improve local resilience and network utilisation.</p>
-            </div>
-          </div>
+
+        <div><div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg></div>
+          <h3>100% Clean Energy</h3><p>Every kilowatt comes from local solar and renewable sources. Zero emissions, maximum impact.</p>
+          <div><span>View sources</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+
+        <div><div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg></div>
+          <h3>Community First</h3><p>Support local schools, businesses, and neighbors. Keep energy dollars in your community.</p>
+          <div><span>See impact</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+
+        <div><div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg></div>
+          <h3>Energy Independence</h3><p>Reduce reliance on the grid with local generation. More resilient during outages and emergencies.</p>
+          <div><span>Learn more</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+
+        <div><div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg></div>
+          <h3>Real-Time Insights</h3><p>Track your usage, savings, and carbon offset with our intuitive dashboard and mobile app.</p>
+          <div><span>Preview dashboard</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+
+        <div><div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+          </svg></div>
+          <h3>Feel-Good Energy</h3><p>Sleep better knowing you're part of the solution. Every kilowatt makes a difference.</p>
+          <div><span>Join the movement</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Signup -->
-  <section id="signup" class="border-t border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-      <div class="max-w-2xl">
-        <h2 class="text-3xl font-semibold tracking-tight">Register your interest</h2>
-        <p class="mt-3 text-slate-300">Tell us a bit about you and we’ll be in touch as the pilot rolls out. We’ll only use your info for this project.</p>
+  <!-- COMMUNITY -->
+  <section id="community">
+    <div>
+      <h2>Support Local Schools & Community Groups</h2>
+      <div id="community-cards">
+        <article><div><!-- icon --></div><h3>Community Access</h3><p>Schools, clubs, and community centres can join as energy consumers in the Virtual Energy Network.</p></article>
+        <article><div><!-- icon --></div><h3>Local Power</h3><p>Their power comes from local rooftops, helping them save money and reduce reliance on traditional wholesale markets.</p></article>
+        <article><div><!-- icon --></div><h3>Community Impact</h3><p>Every time you participate, you're directly supporting local organisations that make your community stronger.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNUP -->
+  <section id="signup">
+    <div>
+      <div id="signup-header">
+        <div id="signup-badge"><span>Limited Spots Available</span></div>
+        <h2>Join the <span class="gradient-text">Enery Revolution</span></h2>
+        <p>Be part of the first communities to experience the future of energy.</p>
       </div>
 
-      <form id="interestForm" class="mt-8 grid gap-6 glass rounded-2xl border border-white/10 p-6 shadow-soft" novalidate>
-        <div class="grid sm:grid-cols-2 gap-4">
+      <form id="interest-form" novalidate>
+        <div id="form-grid">
+          <div><label for="first-name">First name</label><input type="text" id="first-name" name="firstName" required placeholder=" "></div>
+          <div><label for="last-name">Last name</label><input type="text" id="last-name" name="lastName" required placeholder=" "></div>
+          <div><label for="email">Email address</label><input type="email" id="email" name="email" required placeholder=" "></div>
+          <div><label for="phone">Phone (optional)</label><input type="tel" id="phone" name="phone" placeholder=" "></div>
           <div>
-            <label for="firstName" class="block text-sm text-slate-300">First name</label>
-            <input id="firstName" name="firstName" required autocomplete="given-name" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-400" />
-          </div>
-          <div>
-            <label for="lastName" class="block text-sm text-slate-300">Last name</label>
-            <input id="lastName" name="lastName" required autocomplete="family-name" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-400" />
-          </div>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-4">
-          <div>
-            <label for="email" class="block text-sm text-slate-300">Email</label>
-            <input id="email" name="email" type="email" required autocomplete="email" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-400" />
-          </div>
-          <div>
-            <label for="phone" class="block text-sm text-slate-300">Phone (optional)</label>
-            <input id="phone" name="phone" type="tel" inputmode="tel" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-400" />
-          </div>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-4">
-          <div>
-            <label for="role" class="block text-sm text-slate-300">I am a…</label>
-            <select id="role" name="role" required class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 text-slate-100 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-400">
-              <option value="" disabled selected>— Select —</option>
-              <option>Resident / Homeowner</option>
-              <option>Business owner</option>
-              <option>Building owner / Landlord</option>
-              <option>Power company</option>
-              <option>Lines company</option>
-              <option>Installer / Contractor</option>
-              <option>Other</option>
+            <label for="role">I am a...</label>
+            <select id="role" name="role" required>
+              <option value="" disabled selected>Select an option</option>
+              <option value="resident">Resident / Homeowner</option>
+              <option value="business">Business owner</option>
+              <option value="building">Building owner / Landlord</option>
+              <option value="power">Power company</option>
+              <option value="lines">Lines company</option>
+              <option value="installer">Installer / Contractor</option>
+              <option value="other">Other</option>
             </select>
           </div>
-          <div>
-            <label for="location" class="block text-sm text-slate-300">City / Region</label>
-            <input id="location" name="location" required class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-400" />
-          </div>
+          <div><label for="location">City / Region</label><input type="text" id="location" name="location" required placeholder=" "></div>
         </div>
-        <div>
-          <label for="message" class="block text-sm text-slate-300">Anything else?</label>
-          <textarea id="message" name="message" rows="4" placeholder="Roof size, ICP if you know it, tenancy type, or how you’d like to participate…" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-400"></textarea>
+
+        <div id="form-message">
+          <label for="message">Tell us more (optional)</label>
+          <textarea id="message" name="message" rows="4" placeholder="Roof size, ICP number, how you'd like to participate..."></textarea>
         </div>
-        <div class="flex items-start gap-3">
-          <input id="consent" name="consent" type="checkbox" required class="mt-1 h-5 w-5 rounded border-white/20 bg-white/5 text-sky-500 focus:ring-0" />
-          <label for="consent" class="text-sm text-slate-300">I agree to be contacted about Wattly and accept the <button type="button" class="underline decoration-dotted" id="openPrivacy">Privacy Policy</button>.</label>
+
+        <div id="form-consent">
+          <input type="checkbox" id="consent" name="consent" required>
+          <label for="consent">I agree to be contacted about Wattly and accept the <button type="button" id="privacy-link">Privacy Policy</button>.</label>
         </div>
-        <div class="flex flex-col sm:flex-row items-center gap-3">
-          <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-sky-500 px-6 py-3 font-medium text-slate-950 hover:bg-sky-400 shadow-soft">Submit</button>
-          <p id="formStatus" class="text-sm text-slate-300" aria-live="polite"></p>
+
+        <div id="form-actions">
+          <button type="submit" id="submit-btn">
+            <span>Register Interest</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+          <div id="form-status" aria-live="polite"></div>
         </div>
       </form>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="border-t border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-      <h2 class="text-3xl font-semibold tracking-tight">Frequently asked</h2>
-      <div class="mt-8 grid gap-4 sm:grid-cols-2">
-        <details class="group glass rounded-2xl border border-white/10 p-6">
-          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">
-            Is this available in my area?
-            <span class="transition-transform group-open:rotate-180">▾</span>
-          </summary>
-          <p class="mt-3 text-slate-300">We’re rolling out pilots region by region. Register and we’ll keep you posted.</p>
-        </details>
-        <details class="group glass rounded-2xl border border-white/10 p-6">
-          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">
-            Do I need my own solar?
-            <span class="transition-transform group-open:rotate-180">▾</span>
-          </summary>
-          <p class="mt-3 text-slate-300">No. Consumers can benefit from nearby producers’ excess generation.</p>
-        </details>
-        <details class="group glass rounded-2xl border border-white/10 p-6">
-          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">
-            What does it cost?
-            <span class="transition-transform group-open:rotate-180">▾</span>
-          </summary>
-          <p class="mt-3 text-slate-300">Pricing is transparent. Expect a discounted rate vs standard tariffs for pilot participants.</p>
-        </details>
-        <details class="group glass rounded-2xl border border-white/10 p-6">
-          <summary class="cursor-pointer list-none font-medium flex items-center justify-between">
-            Is this compliant with NZ rules?
-            <span class="transition-transform group-open:rotate-180">▾</span>
-          </summary>
-          <p class="mt-3 text-slate-300">We’re working within existing market and distributed generation frameworks, partnering with retailers and network operators.</p>
-        </details>
+  <section id="faq">
+    <div>
+      <div id="faq-header">
+        <div id="faq-badge"><span>FAQ</span></div>
+        <h2>Got questions? <span class="gradient-text">We've got answers</span></h2>
+        <p>Everything you need to know about joining Wattly</p>
+      </div>
+
+      <div id="faq-list">
+        <!-- (details blocks unchanged from your markup) -->
+        <details><summary><span>Is Wattly available in my area?</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></summary><p>We're launching pilots in major cities across New Zealand. Register your interest and we'll notify you as soon as Wattly becomes available in your region. Priority goes to areas with high community interest!</p></details>
+        <details><summary><span>Do I need solar panels to join?</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></summary><p>Not at all! Wattly connects energy producers with consumers. If you don't have solar, you can still benefit from cheaper, cleaner energy from your neighbors who do. If you have solar, you can earn more by selling excess power locally.</p></details>
+        <details><summary><span>How much does it cost?</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></summary><p>There's no upfront cost to join Wattly. You simply pay for the energy you use at our transparent, community rates - typically 30-50% less than standard tariffs. Solar producers earn competitive rates for their excess energy.</p></details>
+        <details><summary><span>Is this compliant with NZ regulations?</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></summary><p>Absolutely. We work within existing market frameworks and partner with licensed retailers and network operators. Our virtual energy network model is fully compliant with Electricity Authority regulations and distributed generation guidelines.</p></details>
+        <details><summary><span>Can I leave anytime?</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></summary><p>Yes! There are no lock-in contracts. You can leave Wattly anytime with 30 days notice. We're confident you'll love the savings and community benefits, but we believe in earning your business every day.</p></details>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="border-t border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-      <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-center gap-2">
-          <span class="font-semibold tracking-tight">Wattly</span>
+  <!-- FINAL CTA -->
+  <section id="final-cta">
+    <div>
+      <div id="cta-background"><div></div><div></div></div>
+      <div id="cta-content">
+        <h2>Ready to power your future?</h2>
+        <p>Join thousands of kiwis already saving with community solar. Limited spots available in the pilot program.</p>
+        <div id="cta-buttons">
+          <a href="#signup"><span>Join Now</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg></a>
+          <a href="mailto:hello@wattly.energy"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg><span>Contact Us</span></a>
         </div>
-        <p class="text-sm text-slate-400">© <span id="y"></span> Wattly. All rights reserved.</p>
-        <div class="text-sm text-slate-400">Contact: <a class="underline decoration-dotted" href="mailto:hello@wattly.energy">hello@wattly.energy</a></div>
       </div>
     </div>
-  </footer>
+  </section>
 
-  <!-- Privacy modal -->
-  <div id="privacyModal" class="fixed inset-0 z-50 hidden place-items-center p-6">
-    <div class="absolute inset-0 bg-black/60" aria-hidden="true"></div>
-    <div role="dialog" aria-modal="true" class="relative w-full max-w-2xl rounded-2xl bg-slate-900 border border-white/10 p-6 shadow-soft">
-      <div class="flex items-start justify-between gap-4">
-        <h3 class="text-xl font-semibold">Privacy Policy</h3>
-        <button id="closePrivacy" class="rounded-md p-2 hover:bg-white/5" aria-label="Close">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6.225 4.811L4.811 6.225 10.586 12l-5.775 5.775 1.414 1.414L12 13.414l5.775 5.775 1.414-1.414L13.414 12l5.775-5.775-1.414-1.414L12 10.586 6.225 4.811z"/></svg>
-        </button>
+<!-- FOOTER -->
+<footer class="border-t border-white/10 bg-slate-950/60">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+
+      <!-- Company / About -->
+      <div>
+        <div class="flex items-center gap-2">
+          <img src="assets/WattlyLogo2.png" alt="Wattly" class="h-6 w-auto">
+          <span class="font-semibold tracking-tight">Wattly</span>
+        </div>
+        <p class="mt-3 text-sm text-slate-400 max-w-xs">
+          Building community-powered virtual energy networks for a cleaner, more resilient future.
+        </p>
       </div>
-      <div class="mt-4 space-y-3 text-sm text-slate-300 max-h-[60vh] overflow-y-auto pr-2">
-        <p>We collect the details you provide to notify you about Wattly’s pilot and related updates. Your data won’t be sold. You can request deletion at any time by emailing <a class="underline" href="mailto:privacy@wattly.energy">privacy@wattly.energy</a>.</p>
-        <p>Form submissions are stored securely and accessed by the Wattly team only for programme coordination and analytics.</p>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="font-semibold text-white mb-3">Quick links</h3>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li><a href="#how" class="hover:underline underline-offset-4 decoration-sky-400/60">How it works</a></li>
+          <li><a href="#benefits" class="hover:underline underline-offset-4 decoration-sky-400/60">Benefits</a></li>
+          <li><a href="#faq" class="hover:underline underline-offset-4 decoration-sky-400/60">FAQ</a></li>
+          <li><a href="#signup" class="hover:underline underline-offset-4 decoration-sky-400/60">Join pilot</a></li>
+        </ul>
       </div>
-      <div class="mt-6 flex justify-end">
-        <button id="okayPrivacy" class="rounded-xl bg-sky-500 px-5 py-2 font-medium text-slate-950 hover:bg-sky-400">Okay</button>
+
+      <!-- Contact + Social inline -->
+      <div>
+        <h3 class="font-semibold text-white mb-3">Contact</h3>
+        <ul class="space-y-2 text-sm text-slate-300 mb-4">
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 flex-shrink-0 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <a href="mailto:hello@wattly.energy"
+               class="hover:underline underline-offset-4 decoration-sky-400/60">hello@wattly.energy</a>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 flex-shrink-0 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 111.414-1.414L12 6.343M12 10a3 3 0 110 6 3 3 0 010-6z"/>
+            </svg>
+            <span>Auckland, New Zealand</span>
+          </li>
+        </ul>
+
+        <!-- Socials inline row -->
+        <div class="flex items-center gap-4">
+          <a href="#" aria-label="Facebook" class="text-slate-400 hover:text-sky-400">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 12.073C24 5.446 18.627 0 12 0S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="Twitter" class="text-slate-400 hover:text-sky-400">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067A13.995 13.995 0 007.557 24C16.61 24 21 16.504 21 10.015c0-.21 0-.42-.015-.63A9.935 9.935 0 0023.953 4.57z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="LinkedIn" class="text-slate-400 hover:text-sky-400">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433A2.063 2.063 0 113.274 5.37a2.063 2.063 0 012.063 2.063zm1.782 13.019H3.555V9h3.564v11.452z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-slate-400">
+      <p>© <span id="year-footer"></span> Wattly. All rights reserved.</p>
+      <div class="flex items-center gap-4">
+        <button type="button" id="privacy-footer-link"
+                class="hover:underline underline-offset-4 decoration-sky-400/60">Privacy Policy</button>
+        <a href="#" class="hover:underline underline-offset-4 decoration-sky-400/60">Terms of Service</a>
       </div>
     </div>
   </div>
+</footer>
 
-  <!-- Script -->
+<script>
+  // dynamic year
+  (document.getElementById('year-footer')||{}).textContent = new Date().getFullYear();
+</script>
+
+<script>
+  // dynamic year for footer
+  (document.getElementById('year-footer')||{}).textContent = new Date().getFullYear();
+</script>
+
+
+  <!-- PRIVACY MODAL -->
+  <div id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title" hidden>
+    <div id="modal-backdrop"></div>
+    <div id="modal-content">
+      <div id="modal-header">
+        <h3 id="privacy-title">Privacy Policy</h3>
+        <button type="button" id="close-privacy" aria-label="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div id="privacy-content">
+        <p>We collect the details you provide to notify you about Wattly's pilot and related updates. Your data is precious to us and will never be sold or shared with third parties without your explicit consent.</p>
+        <p>All form submissions are encrypted and stored securely. Access is restricted to authorized Wattly team members only for program coordination and analytics.</p>
+        <p>You have the right to request access to, correction of, or deletion of your personal information at any time. Simply email us at <a href="mailto:privacy@wattly.energy">privacy@wattly.energy</a>.</p>
+        <p>We use cookies to improve your experience and analyze site traffic. You can manage cookie preferences in your browser settings.</p>
+      </div>
+      <div id="modal-footer"><button type="button" id="accept-privacy">I understand</button></div>
+    </div>
+  </div>
+
+  <!-- INTERACTIONS -->
   <script>
     // Year
-    document.getElementById('y').textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Sticky header tint
+    const hdr = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      hdr.style.backgroundColor = window.scrollY > 8 ? 'rgba(2,6,23,.72)' : 'rgba(2,6,23,.60)';
+    });
 
     // Mobile menu
-    const mm = document.getElementById('mobileMenu');
-    document.getElementById('openMenu').addEventListener('click', () => mm.classList.toggle('hidden'));
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.style.display='none'));
+
+    // Particle background
+    (function(){
+      const root = document.getElementById('particles-container');
+      const count = 70;
+      for (let i=0; i<count; i++){
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random()*100 + 'vw';
+        p.style.setProperty('--x', (Math.random()*100 - 50) + 'px');
+        p.style.animationDelay = (Math.random()*-18)+'s';
+        p.style.opacity = .25 + Math.random()*.45;
+        p.style.width = p.style.height = (2 + Math.random()*3) + 'px';
+        root.appendChild(p);
+      }
+    })();
+
+    // Counters (hero + trust)
+    const counters = document.querySelectorAll('[data-target]');
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseFloat(el.dataset.target);
+        let cur = 0; const steps = 36; const inc = target/steps;
+        const decimals = (target % 1 !== 0) ? 1 : 0;
+        const tick = () => {
+          cur += inc;
+          if (cur >= target) { el.textContent = target.toFixed(decimals); }
+          else { el.textContent = cur.toFixed(decimals); requestAnimationFrame(tick); }
+        };
+        tick(); io.unobserve(el);
+      });
+    },{threshold:.6});
+    counters.forEach(el=>io.observe(el));
+
+    // Calculator logic
+    const slider = document.getElementById('bill-slider');
+    const billEl = document.getElementById('bill-amount');
+    const newEl = document.getElementById('new-amount');
+    const saveEl = document.getElementById('saved-amount');
+    const pctEl = document.getElementById('percent-saved');
+    function calc(){
+      const bill = +slider.value; const p = 0.47; // example
+      const newBill = Math.round(bill*(1-p));
+      const saved = bill - newBill;
+      billEl.textContent = bill;
+      newEl.textContent = newBill;
+      saveEl.textContent = saved;
+      pctEl.textContent = Math.round(p*100);
+    }
+    slider.addEventListener('input', calc); calc();
 
     // Privacy modal
-    const privacy = document.getElementById('privacyModal');
-    const openPrivacyBtn = document.getElementById('openPrivacy');
-    const closePrivacyBtn = document.getElementById('closePrivacy');
-    const okayPrivacyBtn  = document.getElementById('okayPrivacy');
-    const hidePrivacy = () => privacy.classList.add('hidden');
-    openPrivacyBtn.addEventListener('click', () => privacy.classList.remove('hidden'));
-    closePrivacyBtn.addEventListener('click', hidePrivacy);
-    okayPrivacyBtn.addEventListener('click', hidePrivacy);
+    const modal = document.getElementById('privacy-modal');
+    const openPrivacy = document.getElementById('privacy-link');
+    const openPrivacyFooter = document.getElementById('privacy-footer-link');
+    const closePrivacy = document.getElementById('close-privacy');
+    const acceptPrivacy = document.getElementById('accept-privacy');
+    function hideModal(){ modal.setAttribute('hidden','') }
+    function showModal(){ modal.removeAttribute('hidden') }
+    if(openPrivacy) openPrivacy.addEventListener('click', showModal);
+    if(openPrivacyFooter) openPrivacyFooter.addEventListener('click', showModal);
+    closePrivacy.addEventListener('click', hideModal);
+    acceptPrivacy.addEventListener('click', hideModal);
+    modal.addEventListener('click', (e)=>{ if(e.target.id==='modal-backdrop') hideModal() });
 
-    // Form handling
-    const form = document.getElementById('interestForm');
-    const status = document.getElementById('formStatus');
+    // Toast + tiny confetti
+    function toast(msg, ms=2800){
+      const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t);
+      setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .4s' }, ms);
+      setTimeout(()=>t.remove(), ms+450);
+    }
+    function confetti(){
+      const n=60;
+      for(let i=0;i<n;i++){
+        const d=document.createElement('div'); d.className='confetti';
+        d.style.left = (Math.random()*100)+'vw';
+        d.style.setProperty('--h', Math.floor(Math.random()*360));
+        document.body.appendChild(d);
+        const dur = 900 + Math.random()*1200;
+        const dx = (Math.random()*2-1)*220;
+        d.animate([{transform:`translate(0,0) rotate(0)`},{transform:`translate(${dx}px, 110vh) rotate(${720*Math.random()}deg)`}],{duration:dur,easing:'cubic-bezier(.2,.7,.2,1)'}).onfinish=()=>d.remove();
+      }
+    }
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      status.textContent = '';
+    // Form submit → /api/submit-interest
+    const form = document.getElementById('interest-form');
+    const status = document.getElementById('form-status');
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault(); status.textContent='';
+      if(!form.reportValidity()) return;
 
-      if (!form.reportValidity()) return;
+      const fd = new FormData(form);
+      const data = Object.fromEntries(fd.entries());
+      const payload = { ...data, consent: !!data.consent, submittedAt: new Date().toISOString(), source: location.href, userAgent: navigator.userAgent };
 
-      const data = Object.fromEntries(new FormData(form));
-      const payload = {
-        ...data,
-        consent: !!data.consent,
-        submittedAt: new Date().toISOString(),
-        source: window.location.href,
-        userAgent: navigator.userAgent
-      };
+      const btn = document.getElementById('submit-btn');
+      const html = btn.innerHTML;
+      try{
+        btn.disabled = true; btn.style.opacity='.8'; btn.innerHTML='Submitting…';
 
-      const ENDPOINT = '/api/submit-interest';
-
-      try {
-        // Optimistic UI + local backup
+        // local backup
         const draft = JSON.parse(localStorage.getItem('wattlySignups') || '[]');
-        draft.push(payload);
-        localStorage.setItem('wattlySignups', JSON.stringify(draft));
+        draft.push(payload); localStorage.setItem('wattlySignups', JSON.stringify(draft));
 
-        const res = await fetch(ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (!res.ok) throw new Error('Network response was not ok');
-
-        form.reset();
-        status.textContent = "Thanks! You're on the list. We'll be in touch soon.";
-      } catch (err) {
-        console.warn('Submission failed, saved locally', err);
+        const res = await fetch('/api/submit-interest',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+        if(!res.ok) throw new Error('Network error');
+        form.reset(); status.textContent = "Thanks! You're on the list. We'll be in touch soon.";
+        toast('✅ Registration received'); confetti();
+      } catch(err){
+        console.warn('Submit failed; saved locally', err);
         status.innerHTML = 'Saved locally. Please email <a class="underline" href="mailto:hello@wattly.energy">hello@wattly.energy</a> or try again shortly.';
+        toast('⚠️ Saved locally — try again soon');
+      } finally {
+        btn.disabled=false; btn.style.opacity='1'; btn.innerHTML = html;
       }
     });
   </script>
-
-  <!-- Analytics placeholder -->
-  <!-- <script>/* Add your analytics script here */</script> -->
 </body>
 </html>
