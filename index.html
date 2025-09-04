@@ -90,11 +90,15 @@
       position:sticky; top:0; z-index:40;
       border-bottom:1px solid var(--border);
       background:rgba(2,6,23,.60); backdrop-filter: blur(12px);
-      transition:background-color .25s ease;
+      transition: background-color .25s ease, transform .26s ease; /* +transform */
+      will-change: transform;                                      /* smoother */
     }
     #main-header>div{
       max-width:80rem; margin:0 auto; padding:.5rem 1rem;
       display:flex; align-items:center; justify-content:space-between; height:64px;
+    }
+    .header-hidden{
+      transform: translateY(-100%);
     }
     #logo{ display:flex; align-items:center; gap:.6rem; font-weight:700; letter-spacing:.2px }
     #logo>div{ width:40px; height:40px; border-radius:12px; display:grid; place-items:center;
@@ -368,6 +372,50 @@
 }
   </style>
 </head>
+<script>
+(() => {
+  const header = document.getElementById('main-header');
+  if (!header) return;
+
+  let lastY = window.pageYOffset || document.documentElement.scrollTop;
+  let lastT = performance.now();
+  let ticking = false;
+
+  // Tunables (tweak if you like)
+  const HIDE_OFFSET = 80;       // don't hide until you've scrolled this many px
+  const DELTA = 10;             // ignore micro scroll jitter
+  const FAST_UP_VELOCITY = 0.7; // px/ms considered a "fast" up scroll
+
+  function onScroll() {
+    const now = performance.now();
+    const y = window.pageYOffset || document.documentElement.scrollTop;
+    const dy = y - lastY;
+    const dt = Math.max(1, now - lastT);
+    const v = dy / dt; // +down, -up (px/ms)
+
+    // Hide on meaningful downward scroll after threshold
+    if (y > HIDE_OFFSET && dy > DELTA) header.classList.add('header-hidden');
+
+    // Show on any meaningful up scroll, fast up scroll, or top of page
+    if (dy < -DELTA || v < -FAST_UP_VELOCITY || y <= 0) {
+      header.classList.remove('header-hidden');
+    }
+
+    lastY = y;
+    lastT = now;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(onScroll);
+    }
+  }, { passive: true });
+})();
+</script>
+
+
 <body>
 
   <!-- Particle Background Container -->
@@ -710,10 +758,10 @@
       </div>
 
       <div id="trust-stats">
-        <div><div><span data-target="150">0</span></div><div>Homes interested</div></div>
-        <div><div><span data-target="9">0</span></div><div>Partner businesses</div></div>
-        <div><div><span data-target="1.5">0</span>MW</div><div>Capacity ready</div></div>
-        <div><div><span data-target="3">0</span></div><div>Regions launching</div></div>
+        <div><div><span data-target="150">150</span></div><div>Homes interested</div></div>
+        <div><div><span data-target="9">9</span></div><div>Partner businesses</div></div>
+        <div><div><span data-target="1.5">1.5</span>MW</div><div>Capacity ready</div></div>
+        <div><div><span data-target="3">3</span></div><div>Regions launching</div></div>
       </div>
     </div>
   </section>
