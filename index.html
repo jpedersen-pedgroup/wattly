@@ -602,14 +602,35 @@
     </g>
 
     <!-- central hub (Wattly) drawn last -->
-    <g transform="translate(280,190)" text-anchor="middle">
-      <circle r="54" fill="none" stroke="#38bdf8" stroke-opacity=".25"/>
-      <circle r="40" fill="none" stroke="#38bdf8" stroke-opacity=".35"/>
-      <circle r="28" fill="#0ea5e9" opacity=".3"/>
-      <circle r="22" fill="#0ea5e9"/>
-      <g transform="translate(-16,-16)"><use href="#icon-chip"/></g>
-      <text y="60" fill="#e5eefb" font-size="13" font-weight="700">Wattly</text>
-    </g>
+     <!-- Define rounded clip path -->
+  <defs>
+    <clipPath id="logoClip">
+      <rect x="170" y="120" width="60" height="60" rx="12" ry="12" />
+    </clipPath>
+  </defs>
+<!-- Central Hub: Wattly Logo -->
+<g id="hub">
+  <!-- Outer glow circles -->
+  <circle cx="200" cy="150" r="45" fill="none" stroke="#0ea5e9" stroke-width="2" opacity="0.4"></circle>
+  <circle cx="200" cy="150" r="65" fill="none" stroke="#0ea5e9" stroke-width="1" opacity="0.2"></circle>
+  
+  <!-- Wattly Logo Image -->
+  <image 
+    href="assets/Wattly_sm.png"  
+    x="170" 
+    y="120" 
+    width="60" 
+    height="60" 
+    preserveAspectRatio="xMidYMid meet" 
+    clip-path="url(#logoClip)" 
+  />
+
+  <!-- Label -->
+  <text x="200" y="200" text-anchor="middle" fill="white" font-size="14" font-weight="600">
+    Wattly
+  </text>
+</g>
+
   </svg>
 
   <div class="flex justify-center gap-6 mt-4 text-sm text-slate-400">
