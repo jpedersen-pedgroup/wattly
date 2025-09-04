@@ -601,35 +601,31 @@
       <text data-label fill="#38bdf8" font-size="11">–0.9 kW • Business</text>
     </g>
 
-    <!-- central hub (Wattly) drawn last -->
-     <!-- Define rounded clip path -->
+<!-- Central Hub: Wattly Logo Centered -->
+<g id="hub">
+  <!-- Glow circles -->
+  <circle cx="200" cy="150" r="65" fill="none" stroke="#0ea5e9" stroke-width="1" opacity="0.2"></circle>
+  <circle cx="200" cy="150" r="45" fill="none" stroke="#0ea5e9" stroke-width="2" opacity="0.4"></circle>
+
+  <!-- Define rounded clip path (centered box) -->
   <defs>
     <clipPath id="logoClip">
       <rect x="170" y="120" width="60" height="60" rx="12" ry="12" />
     </clipPath>
   </defs>
-<!-- Central Hub: Wattly Logo -->
-<g id="hub">
-  <!-- Outer glow circles -->
-  <circle cx="200" cy="150" r="45" fill="none" stroke="#0ea5e9" stroke-width="2" opacity="0.4"></circle>
-  <circle cx="200" cy="150" r="65" fill="none" stroke="#0ea5e9" stroke-width="1" opacity="0.2"></circle>
-  
-  <!-- Wattly Logo Image -->
+
+  <!-- Wattly Logo, centered at (200,150) -->
   <image 
-    href="assets/Wattly_sm.png"  
+    href="assets/Wattly_sm.png"   <!-- replace with your logo path -->
     x="170" 
     y="120" 
     width="60" 
     height="60" 
-    preserveAspectRatio="xMidYMid meet" 
+    preserveAspectRatio="xMidYMid slice"
     clip-path="url(#logoClip)" 
   />
-
-  <!-- Label -->
-  <text x="200" y="200" text-anchor="middle" fill="white" font-size="14" font-weight="600">
-    Wattly
-  </text>
 </g>
+
 
   </svg>
 
